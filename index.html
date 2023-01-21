@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora monetária</title>
+</head>
+<body>
+    <h1>Calculadora de QTD x VALOR MONETÁRIO</h1>
+    <span>
+        <label for="">Quantidade</label>
+        <input type="text" id="qtd">
+    </span>
+    <span>
+        <label for="">Soma</label>
+        <input type="text" id="dinero1">
+    </span>
+    <div id="result"></div>
+    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.rawgit.com/plentz/jquery-maskmoney/master/dist/jquery.maskMoney.min.js"></script>
+    <script>
+        /** 
+         * Método responsável por formatar o valor 
+         */
+        $(function() {
+            $('#dinero1').maskMoney({
+                prefix: 'R$ ',
+                thousands: '.',
+                decimal: ','
+            });
+        })
+
+        /* Calcula o valor do budget */
+        $("#dinero1").focusout(function() {
+
+        /* Captura o valor sem máscara (sem o R$) */
+        let valueUnsetMask = $('#dinero1').maskMoney("unmasked")[0];
+
+        calcularValorMercadoria(valueUnsetMask);
+        });
+
+        /* Função para calcular o valor do budget unitário x valor */
+        function calcularValorMercadoria(_budget) {
+        let sumValues = _budget * $('#qtd').val();
+
+        console.log(_budget);
+        $("#result").html("Resultado: " + CurrencyFormat(sumValues));
+        }
+
+        /* Função para retornar os valores com "máscara" */
+        function CurrencyFormat(value) {
+            return new Number(value).toLocaleString("ptb",{
+                style: "currency",
+                currency: "BRL"
+            })
+        }
+    </script>
+</body>
+</html>
